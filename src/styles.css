@@ -299,7 +299,7 @@
   position: sticky;
   top: 0;
   z-index: 30;
-  background-color: color-mix(in oklab, oklch(1 0 0) 82%, transparent);
+  background-color: color-mix(in srgb, var(--hub-paper) 84%, transparent);
   backdrop-filter: blur(18px);
   border-bottom: 1px solid var(--border);
 }
