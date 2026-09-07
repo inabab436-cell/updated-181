@@ -592,13 +592,14 @@ function ChatPage() {
             {products.length > 0 && (
               <Button
                 type="button"
+                variant="secondary"
                 size="sm"
-                className="shrink-0 gap-1 rounded-full shadow-glow"
+                className="shrink-0 gap-1.5 rounded-full"
                 onClick={() => setProductsOpen(true)}
               >
-                <ShoppingBag className="h-4 w-4" />
+                <ShoppingBag className="h-3.5 w-3.5" />
                 المنتجات
-                <span className="rounded-full bg-primary-foreground/20 px-1.5 text-[10px] font-bold">
+                <span className="rounded-full bg-primary px-2 py-0.5 text-[10px] font-bold text-primary-foreground">
                   {products.length}
                 </span>
               </Button>
@@ -607,14 +608,14 @@ function ChatPage() {
               type="button"
               variant="outline"
               size="sm"
-              className="shrink-0 gap-1 rounded-full"
+              className="shrink-0 gap-1.5 rounded-full border-dashed"
               onClick={() => void shareLocation(false)}
               disabled={disabled || locBusy || liveSharing}
             >
               {locBusy && !liveSharing ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
               ) : (
-                <MapPin className="h-4 w-4" />
+                <MapPin className="h-3.5 w-3.5" />
               )}
               موقعي الحالي
             </Button>
@@ -623,23 +624,23 @@ function ChatPage() {
                 type="button"
                 variant="destructive"
                 size="sm"
-                className="shrink-0 gap-1 rounded-full"
+                className="shrink-0 gap-1.5 rounded-full"
                 onClick={() => void stopLiveSharing()}
               >
-                <Square className="h-4 w-4" />
+                <Square className="h-3.5 w-3.5" />
                 إيقاف المشاركة الحية
               </Button>
             ) : (
               <Button
                 type="button"
-                variant="secondary"
+                variant="outline"
                 size="sm"
-                className="shrink-0 gap-1 rounded-full"
+                className="shrink-0 gap-1.5 rounded-full"
                 onClick={() => void startLiveSharing()}
                 disabled={disabled || locBusy}
               >
-                <Radio className="h-4 w-4" />
-                مشاركة الموقع الحي
+                <Radio className="h-3.5 w-3.5" />
+                مشاركة الموقع الحية
               </Button>
             )}
             {liveSharing && (
