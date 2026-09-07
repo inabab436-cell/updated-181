@@ -3,12 +3,12 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import {
   Send, ArrowRight, User2, Bot, UserCircle2, Paperclip, X, Loader2,
-  MapPin, Radio, Square,
+  MapPin, Radio, Square, ShoppingBag, ChevronDown,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { getStorefront } from "@/lib/storefront.functions";
+import { getStorefront, type StorefrontProduct } from "@/lib/storefront.functions";
 import { getChatConfig } from "@/lib/chat-config.functions";
 import { uploadChatImage } from "@/lib/chat-upload.functions";
 import {
