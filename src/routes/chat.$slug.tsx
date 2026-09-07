@@ -812,11 +812,9 @@ function ProductTile({
 }
 
 const BUBBLE_THEME = {
-  userBubble: "bg-gradient-brand text-primary-foreground rounded-br-md",
-  userAvatar: "bg-primary text-primary-foreground",
+  userBubble: "bg-gradient-brand text-primary-foreground rounded-br-lg shadow-glow",
   assistantBubble:
-    "bg-background border border-border text-foreground rounded-bl-md shadow-card",
-  assistantAvatar: "bg-accent text-accent-foreground",
+    "bg-card border border-border text-foreground rounded-bl-lg shadow-card",
 };
 
 function MessageBubble({
@@ -835,13 +833,8 @@ function MessageBubble({
   const media = all.filter((a) => a.kind !== "location");
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
-      <div className={`flex max-w-[86%] items-end gap-2 ${isUser ? "flex-row-reverse" : ""}`}>
-        <div className={`grid h-7 w-7 shrink-0 place-items-center rounded-full text-xs ${
-          isUser ? theme.userAvatar : theme.assistantAvatar
-        }`}>
-          {isUser ? <User2 className="h-3.5 w-3.5" /> : <Bot className="h-3.5 w-3.5" />}
-        </div>
-        <div className={`space-y-2 rounded-3xl px-3.5 py-2.5 text-[13px] whitespace-pre-wrap leading-relaxed ${
+      <div className="flex max-w-[88%] items-end gap-2">
+        <div className={`space-y-2 rounded-[1.4rem] px-3.5 py-2.5 text-[13.5px] whitespace-pre-wrap leading-[1.85] ${
           isUser ? theme.userBubble : theme.assistantBubble
         }`}>
           {media.length > 0 && (
