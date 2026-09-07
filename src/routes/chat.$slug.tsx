@@ -704,53 +704,73 @@ function ChatPage() {
         )}
 
       </main>
+
+      {productsOpen && products.length > 0 && (
+        <ProductSheet
+          products={products}
+          onClose={() => setProductsOpen(false)}
+          onPick={(name) => {
+            setInput((v) => (v ? `${v} ${name}` : name));
+            setProductsOpen(false);
+          }}
+        />
+      )}
     </div>
   );
 }
 
-/** Expandable products rail: a swipeable row that opens into a full grid. */
-function ProductStrip({
+/** Products picker as a bottom sheet — never covers the conversation. */
+function ProductSheet({
   products,
   onPick,
+  onClose,
 }: {
   products: StorefrontProduct[];
   onPick: (name: string) => void;
+  onClose: () => void;
 }) {
-  const [open, setOpen] = useState(false);
+  const [q, setQ] = useState("");
+  const list = useMemo(() => {
+    const t = q.trim();
+    if (!t) return products;
+    return products.filter((p) => p.name?.toLowerCase().includes(t.toLowerCase()));
+  }, [products, q]);
 
   return (
-    <div className="border-t border-border bg-secondary/40">
-      <div className="mx-auto w-full max-w-2xl px-4 py-2">
-        <button
-          onClick={() => setOpen((v) => !v)}
-          className="flex w-full items-center justify-between gap-2 py-1 text-start"
-        >
-          <span className="flex items-center gap-2 text-[12px] font-bold">
+    <>
+      <div className="hub-sheet-backdrop" onClick={onClose} aria-hidden />
+      <div dir="rtl" className="hub-sheet mx-auto w-full max-w-2xl" role="dialog" aria-label="منتجات المتجر">
+        <div className="flex items-center justify-between gap-3 px-4 pb-2 pt-3">
+          <span className="mx-auto absolute inset-x-0 top-2 h-1 w-10 rounded-full bg-border" />
+          <span className="hub-display flex items-center gap-2 text-sm">
             <ShoppingBag className="h-4 w-4 text-primary" />
             منتجات المتجر
             <span className="hub-chip bg-accent text-accent-foreground">{products.length}</span>
           </span>
-          <span className="flex items-center gap-1 text-[11px] font-semibold text-muted-foreground">
-            {open ? "طي" : "توسيع"}
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform ${open ? "rotate-180" : ""}`} />
-          </span>
-        </button>
-
-        {open ? (
-          <div className="mt-2 grid max-h-[46vh] grid-cols-2 gap-2 overflow-y-auto pb-2 sm:grid-cols-3">
-            {products.map((p) => (
-              <ProductTile key={p.id} p={p} onPick={onPick} block />
-            ))}
-          </div>
-        ) : (
-          <div className="hub-scroll-x -mx-1 mt-1 flex gap-2 px-1 pb-2">
-            {products.map((p) => (
-              <ProductTile key={p.id} p={p} onPick={onPick} />
-            ))}
-          </div>
-        )}
+          <Button variant="ghost" size="icon" className="rounded-full" onClick={onClose} aria-label="إغلاق">
+            <ChevronDown className="h-4 w-4" />
+          </Button>
+        </div>
+        <div className="px-4 pb-2">
+          <input
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="ابحث عن منتج…"
+            className="h-10 w-full rounded-full border border-border bg-secondary/60 px-4 text-[13px] outline-none focus:border-primary/60"
+          />
+        </div>
+        <div className="grid max-h-[56vh] grid-cols-2 gap-2.5 overflow-y-auto px-4 pb-6 sm:grid-cols-3">
+          {list.map((p) => (
+            <ProductTile key={p.id} p={p} onPick={onPick} block />
+          ))}
+          {list.length === 0 && (
+            <p className="col-span-full py-8 text-center text-xs text-muted-foreground">
+              لا يوجد منتج بهذا الاسم.
+            </p>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
