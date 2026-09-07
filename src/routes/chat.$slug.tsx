@@ -161,6 +161,7 @@ function ChatPage() {
   // Tracked internally only — never surfaced to the customer in any way.
   const [, setNeedsHuman] = useState(false);
   const [input, setInput] = useState("");
+  const [productsOpen, setProductsOpen] = useState(false);
   const [sending, setSending] = useState(false);
   const [pendingFile, setPendingFile] = useState<{ file: File; preview: string } | null>(null);
   const [uploading, setUploading] = useState(false);
