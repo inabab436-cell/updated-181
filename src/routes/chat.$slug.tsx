@@ -595,6 +595,20 @@ function ChatPage() {
             </div>
           )}
           <div className="hub-scroll-x mb-2 flex items-center gap-2">
+            {products.length > 0 && (
+              <Button
+                type="button"
+                size="sm"
+                className="shrink-0 gap-1 rounded-full shadow-glow"
+                onClick={() => setProductsOpen(true)}
+              >
+                <ShoppingBag className="h-4 w-4" />
+                المنتجات
+                <span className="rounded-full bg-primary-foreground/20 px-1.5 text-[10px] font-bold">
+                  {products.length}
+                </span>
+              </Button>
+            )}
             <Button
               type="button"
               variant="outline"
