@@ -477,12 +477,8 @@ function ChatPage() {
         <div className="mx-auto flex w-full max-w-2xl items-center justify-between gap-3 px-4 py-3">
           <div className="flex min-w-0 items-center gap-3">
             {storefront.data?.logoUrl ? (
-              <img src={storefront.data.logoUrl} alt={brandName} className="h-10 w-10 shrink-0 rounded-2xl object-cover" />
-            ) : (
-              <div className="hub-display grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-gradient-brand text-sm font-bold text-primary-foreground">
-                {String(brandName).slice(0, 1).toUpperCase()}
-              </div>
-            )}
+              <img src={storefront.data.logoUrl} alt={brandName} className="h-10 w-10 shrink-0 rounded-2xl object-cover shadow-card" />
+            ) : null}
             <div className="min-w-0">
               <div className="truncate text-sm font-bold">{brandName}</div>
               <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
@@ -539,11 +535,8 @@ function ChatPage() {
         <div className="flex-1 space-y-3 overflow-y-auto py-2">
           {messages.length === 0 && !initErr && (
             <div className="grid place-items-center py-16 text-center">
-              <div className="hub-display grid h-16 w-16 place-items-center rounded-3xl bg-gradient-brand text-lg text-primary-foreground shadow-glow">
-                {String(brandName).slice(0, 1).toUpperCase()}
-              </div>
-              <p className="hub-display mt-4 text-base">ابدأ المحادثة</p>
-              <p className="mt-1 max-w-xs text-xs leading-relaxed text-muted-foreground">
+              <p className="hub-display text-lg">ابدأ المحادثة</p>
+              <p className="mt-1 max-w-xs text-sm leading-relaxed text-muted-foreground">
                 اسأل عن أي منتج أو سعر أو شحن — أو افتح «المنتجات» بالأسفل واختر ما يعجبك.
               </p>
             </div>
@@ -599,13 +592,14 @@ function ChatPage() {
             {products.length > 0 && (
               <Button
                 type="button"
+                variant="secondary"
                 size="sm"
-                className="shrink-0 gap-1 rounded-full shadow-glow"
+                className="shrink-0 gap-1.5 rounded-full"
                 onClick={() => setProductsOpen(true)}
               >
-                <ShoppingBag className="h-4 w-4" />
+                <ShoppingBag className="h-3.5 w-3.5" />
                 المنتجات
-                <span className="rounded-full bg-primary-foreground/20 px-1.5 text-[10px] font-bold">
+                <span className="rounded-full bg-primary px-2 py-0.5 text-[10px] font-bold text-primary-foreground">
                   {products.length}
                 </span>
               </Button>
@@ -614,14 +608,14 @@ function ChatPage() {
               type="button"
               variant="outline"
               size="sm"
-              className="shrink-0 gap-1 rounded-full"
+              className="shrink-0 gap-1.5 rounded-full border-dashed"
               onClick={() => void shareLocation(false)}
               disabled={disabled || locBusy || liveSharing}
             >
               {locBusy && !liveSharing ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
               ) : (
-                <MapPin className="h-4 w-4" />
+                <MapPin className="h-3.5 w-3.5" />
               )}
               موقعي الحالي
             </Button>
@@ -630,23 +624,23 @@ function ChatPage() {
                 type="button"
                 variant="destructive"
                 size="sm"
-                className="shrink-0 gap-1 rounded-full"
+                className="shrink-0 gap-1.5 rounded-full"
                 onClick={() => void stopLiveSharing()}
               >
-                <Square className="h-4 w-4" />
+                <Square className="h-3.5 w-3.5" />
                 إيقاف المشاركة الحية
               </Button>
             ) : (
               <Button
                 type="button"
-                variant="secondary"
+                variant="outline"
                 size="sm"
-                className="shrink-0 gap-1 rounded-full"
+                className="shrink-0 gap-1.5 rounded-full"
                 onClick={() => void startLiveSharing()}
                 disabled={disabled || locBusy}
               >
-                <Radio className="h-4 w-4" />
-                مشاركة الموقع الحي
+                <Radio className="h-3.5 w-3.5" />
+                مشاركة الموقع الحية
               </Button>
             )}
             {liveSharing && (
@@ -812,9 +806,10 @@ function ProductTile({
 }
 
 const BUBBLE_THEME = {
-  userBubble: "bg-gradient-brand text-primary-foreground rounded-br-lg shadow-glow",
+  userBubble:
+    "bg-primary text-primary-foreground rounded-br-md shadow-card",
   assistantBubble:
-    "bg-card border border-border text-foreground rounded-bl-lg shadow-card",
+    "bg-card border border-border text-foreground rounded-bl-md shadow-card",
 };
 
 function MessageBubble({
@@ -833,8 +828,8 @@ function MessageBubble({
   const media = all.filter((a) => a.kind !== "location");
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
-      <div className="flex max-w-[88%] items-end gap-2">
-        <div className={`space-y-2 rounded-[1.4rem] px-3.5 py-2.5 text-[13.5px] whitespace-pre-wrap leading-[1.85] ${
+      <div className={`flex max-w-[88%] items-end gap-2 ${isUser ? "flex-row-reverse" : ""}`}>
+        <div className={`space-y-2 rounded-2xl px-4 py-2.5 text-[14px] whitespace-pre-wrap leading-[1.8] ${
           isUser ? theme.userBubble : theme.assistantBubble
         }`}>
           {media.length > 0 && (
@@ -845,7 +840,7 @@ function MessageBubble({
                     src={a.url}
                     alt={a.name || "صورة مرفقة"}
                     loading="lazy"
-                    className="max-h-56 w-full rounded-2xl object-cover"
+                    className="max-h-56 w-full rounded-xl object-cover"
                   />
                 </a>
               ))}
@@ -859,9 +854,9 @@ function MessageBubble({
                 href={mapsUrl(a.lat, a.lng)}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-2 rounded-2xl border border-border bg-background px-3 py-2 text-foreground no-underline"
+                className="flex items-center gap-2 rounded-xl border border-border bg-background px-3 py-2 text-foreground no-underline"
               >
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-accent">
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-accent">
                   {live ? (
                     <Radio className="h-4 w-4 animate-pulse text-primary" />
                   ) : (
