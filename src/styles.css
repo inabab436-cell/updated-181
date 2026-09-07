@@ -204,43 +204,47 @@
 
 /* ============================================================
    HUB — isolated redesign scope for /orders, /earnings, /chat.
-   Soft-white + deep-green, geometric type, mobile-first.
+   Warm stone palette: deep espresso ink, warm charcoal, muted
+   taupe, cream paper. Natural chat-app feel, mobile-first.
    Nothing here leaks outside an element carrying `.hub`.
    ============================================================ */
 .hub {
-  --hub-green: oklch(0.42 0.09 165);
-  --hub-green-deep: oklch(0.33 0.08 166);
-  --hub-green-soft: oklch(0.95 0.02 165);
-  --hub-ink: oklch(0.22 0.02 265);
+  --hub-ink: #2c2926;
+  --hub-stone: #4a453f;
+  --hub-warm: #9c9389;
+  --hub-cream: #f7f5f2;
+  --hub-paper: #ffffff;
 
-  --background: oklch(1 0 0);
+  --background: var(--hub-cream);
   --foreground: var(--hub-ink);
-  --card: oklch(1 0 0);
+  --card: var(--hub-paper);
   --card-foreground: var(--hub-ink);
-  --popover: oklch(1 0 0);
+  --popover: var(--hub-paper);
   --popover-foreground: var(--hub-ink);
-  --primary: var(--hub-green);
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.972 0.004 165);
-  --secondary-foreground: var(--hub-green-deep);
-  --muted: oklch(0.972 0.004 165);
-  --muted-foreground: oklch(0.52 0.015 250);
-  --accent: var(--hub-green-soft);
-  --accent-foreground: var(--hub-green-deep);
-  --border: oklch(0.925 0.004 165);
-  --input: oklch(0.925 0.004 165);
-  --ring: var(--hub-green);
+  --primary: var(--hub-stone);
+  --primary-foreground: var(--hub-cream);
+  --secondary: #f0ece6;
+  --secondary-foreground: var(--hub-ink);
+  --muted: #f0ece6;
+  --muted-foreground: var(--hub-warm);
+  --accent: #ebe5dd;
+  --accent-foreground: var(--hub-ink);
+  --destructive: #a53c3c;
+  --destructive-foreground: #fff;
+  --border: #e5dfd8;
+  --input: #e5dfd8;
+  --ring: var(--hub-stone);
   --radius: 1.125rem;
 
-  --gradient-brand: linear-gradient(140deg, oklch(0.47 0.1 165) 0%, oklch(0.33 0.08 166) 100%);
+  --gradient-brand: linear-gradient(145deg, #5a544d 0%, var(--hub-ink) 100%);
   --gradient-surface: none;
-  --shadow-card: 0 1px 2px oklch(0.22 0.02 265 / 0.05), 0 10px 30px -22px oklch(0.22 0.02 265 / 0.35);
-  --shadow-elegant: 0 1px 2px oklch(0.22 0.02 265 / 0.05), 0 18px 44px -28px oklch(0.33 0.08 166 / 0.5);
-  --shadow-glow: 0 24px 60px -28px oklch(0.42 0.09 165 / 0.45);
+  --shadow-card: 0 1px 2px rgba(44, 41, 38, 0.05), 0 10px 30px -22px rgba(44, 41, 38, 0.18);
+  --shadow-elegant: 0 1px 2px rgba(44, 41, 38, 0.05), 0 18px 44px -28px rgba(44, 41, 38, 0.25);
+  --shadow-glow: 0 24px 60px -28px rgba(44, 41, 38, 0.32);
 
-  background-color: oklch(0.976 0.003 165);
+  background-color: var(--hub-cream);
   color: var(--foreground);
-  font-family: "Cairo", "DM Sans", var(--font-sans);
+  font-family: "Tajawal", "Cairo", "DM Sans", var(--font-sans);
   letter-spacing: 0;
 }
 
@@ -248,7 +252,7 @@
 .hub h2,
 .hub h3,
 .hub .hub-display {
-  font-family: "Cairo", "Space Grotesk", var(--font-sans);
+  font-family: "Tajawal", "Cairo", "Space Grotesk", var(--font-sans);
   font-weight: 800;
   letter-spacing: -0.01em;
 }
@@ -257,11 +261,11 @@
   font-family: "Space Grotesk", "DM Sans", sans-serif;
 }
 
-/* Chat canvas — subtle green haze so bubbles float instead of sitting flat */
+/* Chat canvas — warm stone haze so the conversation feels like paper under soft light */
 @utility hub-canvas {
   background-image:
-    radial-gradient(720px 340px at 100% -8%, color-mix(in oklab, oklch(0.42 0.09 165) 10%, transparent), transparent 65%),
-    radial-gradient(520px 320px at -10% 108%, color-mix(in oklab, oklch(0.42 0.09 165) 8%, transparent), transparent 60%);
+    radial-gradient(720px 340px at 100% -8%, color-mix(in srgb, var(--hub-warm) 7%, transparent), transparent 65%),
+    radial-gradient(520px 320px at -10% 108%, color-mix(in srgb, var(--hub-stone) 5%, transparent), transparent 60%);
 }
 
 /* Bottom sheet used for the products picker */
@@ -269,7 +273,7 @@
   position: fixed;
   inset: 0;
   z-index: 50;
-  background-color: color-mix(in oklab, oklch(0.22 0.02 265) 42%, transparent);
+  background-color: color-mix(in srgb, var(--hub-ink) 40%, transparent);
   backdrop-filter: blur(3px);
 }
 
@@ -281,7 +285,7 @@
   border-start-start-radius: 1.75rem;
   border-start-end-radius: 1.75rem;
   background-color: var(--card);
-  box-shadow: 0 -20px 60px -24px oklch(0.22 0.02 265 / 0.45);
+  box-shadow: 0 -20px 60px -24px rgba(44, 41, 38, 0.45);
   animation: hub-sheet-in 0.24s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
