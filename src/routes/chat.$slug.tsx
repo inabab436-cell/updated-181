@@ -806,9 +806,10 @@ function ProductTile({
 }
 
 const BUBBLE_THEME = {
-  userBubble: "bg-gradient-brand text-primary-foreground rounded-br-lg shadow-glow",
+  userBubble:
+    "bg-primary text-primary-foreground rounded-br-md shadow-card",
   assistantBubble:
-    "bg-card border border-border text-foreground rounded-bl-lg shadow-card",
+    "bg-card border border-border text-foreground rounded-bl-md shadow-card",
 };
 
 function MessageBubble({
@@ -827,8 +828,8 @@ function MessageBubble({
   const media = all.filter((a) => a.kind !== "location");
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
-      <div className="flex max-w-[88%] items-end gap-2">
-        <div className={`space-y-2 rounded-[1.4rem] px-3.5 py-2.5 text-[13.5px] whitespace-pre-wrap leading-[1.85] ${
+      <div className={`flex max-w-[88%] items-end gap-2 ${isUser ? "flex-row-reverse" : ""}`}>
+        <div className={`space-y-2 rounded-2xl px-4 py-2.5 text-[14px] whitespace-pre-wrap leading-[1.8] ${
           isUser ? theme.userBubble : theme.assistantBubble
         }`}>
           {media.length > 0 && (
@@ -839,7 +840,7 @@ function MessageBubble({
                     src={a.url}
                     alt={a.name || "صورة مرفقة"}
                     loading="lazy"
-                    className="max-h-56 w-full rounded-2xl object-cover"
+                    className="max-h-56 w-full rounded-xl object-cover"
                   />
                 </a>
               ))}
@@ -853,9 +854,9 @@ function MessageBubble({
                 href={mapsUrl(a.lat, a.lng)}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-2 rounded-2xl border border-border bg-background px-3 py-2 text-foreground no-underline"
+                className="flex items-center gap-2 rounded-xl border border-border bg-background px-3 py-2 text-foreground no-underline"
               >
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-accent">
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-accent">
                   {live ? (
                     <Radio className="h-4 w-4 animate-pulse text-primary" />
                   ) : (
