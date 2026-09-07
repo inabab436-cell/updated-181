@@ -505,13 +505,9 @@ function ChatPage() {
             </Button>
           </div>
         </div>
-
-        {loggedIn && products.length > 0 && (
-          <ProductStrip products={products} onPick={(name) => setInput((v) => (v ? `${v} ${name}` : name))} />
-        )}
       </header>
 
-      <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col px-4 pt-3">
+      <main className="hub-canvas mx-auto flex w-full max-w-2xl flex-1 flex-col px-4 pt-3">
         {notFound && (
           <div className="hub-card p-6 text-center text-sm text-muted-foreground">
             المتجر غير موجود.
