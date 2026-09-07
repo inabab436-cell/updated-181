@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import {
-  Send, ArrowRight, User2, Bot, UserCircle2, Paperclip, X, Loader2,
+  Send, ArrowRight, UserCircle2, Paperclip, X, Loader2,
   MapPin, Radio, Square, ShoppingBag, ChevronDown,
 } from "lucide-react";
 
@@ -161,6 +161,7 @@ function ChatPage() {
   // Tracked internally only — never surfaced to the customer in any way.
   const [, setNeedsHuman] = useState(false);
   const [input, setInput] = useState("");
+  const [productsOpen, setProductsOpen] = useState(false);
   const [sending, setSending] = useState(false);
   const [pendingFile, setPendingFile] = useState<{ file: File; preview: string } | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -505,13 +506,9 @@ function ChatPage() {
             </Button>
           </div>
         </div>
-
-        {loggedIn && products.length > 0 && (
-          <ProductStrip products={products} onPick={(name) => setInput((v) => (v ? `${v} ${name}` : name))} />
-        )}
       </header>
 
-      <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col px-4 pt-3">
+      <main className="hub-canvas mx-auto flex w-full max-w-2xl flex-1 flex-col px-4 pt-3">
         {notFound && (
           <div className="hub-card p-6 text-center text-sm text-muted-foreground">
             المتجر غير موجود.
@@ -542,12 +539,12 @@ function ChatPage() {
         <div className="flex-1 space-y-3 overflow-y-auto py-2">
           {messages.length === 0 && !initErr && (
             <div className="grid place-items-center py-16 text-center">
-              <div className="grid h-14 w-14 place-items-center rounded-2xl bg-accent text-accent-foreground">
-                <Bot className="h-6 w-6" />
+              <div className="hub-display grid h-16 w-16 place-items-center rounded-3xl bg-gradient-brand text-lg text-primary-foreground shadow-glow">
+                {String(brandName).slice(0, 1).toUpperCase()}
               </div>
-              <p className="mt-3 text-sm font-semibold">ابدأ المحادثة</p>
-              <p className="mt-1 max-w-xs text-xs text-muted-foreground">
-                اسأل عن أي منتج أو سعر أو شحن، واستعن بشريط المنتجات في الأعلى.
+              <p className="hub-display mt-4 text-base">ابدأ المحادثة</p>
+              <p className="mt-1 max-w-xs text-xs leading-relaxed text-muted-foreground">
+                اسأل عن أي منتج أو سعر أو شحن — أو افتح «المنتجات» بالأسفل واختر ما يعجبك.
               </p>
             </div>
           )}
@@ -599,6 +596,20 @@ function ChatPage() {
             </div>
           )}
           <div className="hub-scroll-x mb-2 flex items-center gap-2">
+            {products.length > 0 && (
+              <Button
+                type="button"
+                size="sm"
+                className="shrink-0 gap-1 rounded-full shadow-glow"
+                onClick={() => setProductsOpen(true)}
+              >
+                <ShoppingBag className="h-4 w-4" />
+                المنتجات
+                <span className="rounded-full bg-primary-foreground/20 px-1.5 text-[10px] font-bold">
+                  {products.length}
+                </span>
+              </Button>
+            )}
             <Button
               type="button"
               variant="outline"
@@ -693,53 +704,73 @@ function ChatPage() {
         )}
 
       </main>
+
+      {productsOpen && products.length > 0 && (
+        <ProductSheet
+          products={products}
+          onClose={() => setProductsOpen(false)}
+          onPick={(name) => {
+            setInput((v) => (v ? `${v} ${name}` : name));
+            setProductsOpen(false);
+          }}
+        />
+      )}
     </div>
   );
 }
 
-/** Expandable products rail: a swipeable row that opens into a full grid. */
-function ProductStrip({
+/** Products picker as a bottom sheet — never covers the conversation. */
+function ProductSheet({
   products,
   onPick,
+  onClose,
 }: {
   products: StorefrontProduct[];
   onPick: (name: string) => void;
+  onClose: () => void;
 }) {
-  const [open, setOpen] = useState(false);
+  const [q, setQ] = useState("");
+  const list = useMemo(() => {
+    const t = q.trim();
+    if (!t) return products;
+    return products.filter((p) => p.name?.toLowerCase().includes(t.toLowerCase()));
+  }, [products, q]);
 
   return (
-    <div className="border-t border-border bg-secondary/40">
-      <div className="mx-auto w-full max-w-2xl px-4 py-2">
-        <button
-          onClick={() => setOpen((v) => !v)}
-          className="flex w-full items-center justify-between gap-2 py-1 text-start"
-        >
-          <span className="flex items-center gap-2 text-[12px] font-bold">
+    <>
+      <div className="hub-sheet-backdrop" onClick={onClose} aria-hidden />
+      <div dir="rtl" className="hub-sheet mx-auto w-full max-w-2xl" role="dialog" aria-label="منتجات المتجر">
+        <div className="flex items-center justify-between gap-3 px-4 pb-2 pt-3">
+          <span className="mx-auto absolute inset-x-0 top-2 h-1 w-10 rounded-full bg-border" />
+          <span className="hub-display flex items-center gap-2 text-sm">
             <ShoppingBag className="h-4 w-4 text-primary" />
             منتجات المتجر
             <span className="hub-chip bg-accent text-accent-foreground">{products.length}</span>
           </span>
-          <span className="flex items-center gap-1 text-[11px] font-semibold text-muted-foreground">
-            {open ? "طي" : "توسيع"}
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform ${open ? "rotate-180" : ""}`} />
-          </span>
-        </button>
-
-        {open ? (
-          <div className="mt-2 grid max-h-[46vh] grid-cols-2 gap-2 overflow-y-auto pb-2 sm:grid-cols-3">
-            {products.map((p) => (
-              <ProductTile key={p.id} p={p} onPick={onPick} block />
-            ))}
-          </div>
-        ) : (
-          <div className="hub-scroll-x -mx-1 mt-1 flex gap-2 px-1 pb-2">
-            {products.map((p) => (
-              <ProductTile key={p.id} p={p} onPick={onPick} />
-            ))}
-          </div>
-        )}
+          <Button variant="ghost" size="icon" className="rounded-full" onClick={onClose} aria-label="إغلاق">
+            <ChevronDown className="h-4 w-4" />
+          </Button>
+        </div>
+        <div className="px-4 pb-2">
+          <input
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="ابحث عن منتج…"
+            className="h-10 w-full rounded-full border border-border bg-secondary/60 px-4 text-[13px] outline-none focus:border-primary/60"
+          />
+        </div>
+        <div className="grid max-h-[56vh] grid-cols-2 gap-2.5 overflow-y-auto px-4 pb-6 sm:grid-cols-3">
+          {list.map((p) => (
+            <ProductTile key={p.id} p={p} onPick={onPick} block />
+          ))}
+          {list.length === 0 && (
+            <p className="col-span-full py-8 text-center text-xs text-muted-foreground">
+              لا يوجد منتج بهذا الاسم.
+            </p>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
@@ -781,11 +812,9 @@ function ProductTile({
 }
 
 const BUBBLE_THEME = {
-  userBubble: "bg-gradient-brand text-primary-foreground rounded-br-md",
-  userAvatar: "bg-primary text-primary-foreground",
+  userBubble: "bg-gradient-brand text-primary-foreground rounded-br-lg shadow-glow",
   assistantBubble:
-    "bg-background border border-border text-foreground rounded-bl-md shadow-card",
-  assistantAvatar: "bg-accent text-accent-foreground",
+    "bg-card border border-border text-foreground rounded-bl-lg shadow-card",
 };
 
 function MessageBubble({
@@ -804,13 +833,8 @@ function MessageBubble({
   const media = all.filter((a) => a.kind !== "location");
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
-      <div className={`flex max-w-[86%] items-end gap-2 ${isUser ? "flex-row-reverse" : ""}`}>
-        <div className={`grid h-7 w-7 shrink-0 place-items-center rounded-full text-xs ${
-          isUser ? theme.userAvatar : theme.assistantAvatar
-        }`}>
-          {isUser ? <User2 className="h-3.5 w-3.5" /> : <Bot className="h-3.5 w-3.5" />}
-        </div>
-        <div className={`space-y-2 rounded-3xl px-3.5 py-2.5 text-[13px] whitespace-pre-wrap leading-relaxed ${
+      <div className="flex max-w-[88%] items-end gap-2">
+        <div className={`space-y-2 rounded-[1.4rem] px-3.5 py-2.5 text-[13.5px] whitespace-pre-wrap leading-[1.85] ${
           isUser ? theme.userBubble : theme.assistantBubble
         }`}>
           {media.length > 0 && (
