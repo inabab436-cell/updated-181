@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import {
-  Send, ArrowRight, User2, Bot, UserCircle2, Paperclip, X, Loader2,
+  Send, ArrowRight, UserCircle2, Paperclip, X, Loader2,
   MapPin, Radio, Square, ShoppingBag, ChevronDown,
 } from "lucide-react";
 
