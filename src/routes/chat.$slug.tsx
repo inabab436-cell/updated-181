@@ -478,11 +478,7 @@ function ChatPage() {
           <div className="flex min-w-0 items-center gap-3">
             {storefront.data?.logoUrl ? (
               <img src={storefront.data.logoUrl} alt={brandName} className="h-10 w-10 shrink-0 rounded-2xl object-cover shadow-card" />
-            ) : (
-              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-secondary text-sm font-bold text-secondary-foreground">
-                {String(brandName).slice(0, 1).toUpperCase()}
-              </div>
-            )}
+            ) : null}
             <div className="min-w-0">
               <div className="truncate text-sm font-bold">{brandName}</div>
               <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
