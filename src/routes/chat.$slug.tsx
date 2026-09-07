@@ -535,11 +535,8 @@ function ChatPage() {
         <div className="flex-1 space-y-3 overflow-y-auto py-2">
           {messages.length === 0 && !initErr && (
             <div className="grid place-items-center py-16 text-center">
-              <div className="hub-display grid h-16 w-16 place-items-center rounded-3xl bg-gradient-brand text-lg text-primary-foreground shadow-glow">
-                {String(brandName).slice(0, 1).toUpperCase()}
-              </div>
-              <p className="hub-display mt-4 text-base">ابدأ المحادثة</p>
-              <p className="mt-1 max-w-xs text-xs leading-relaxed text-muted-foreground">
+              <p className="hub-display text-lg">ابدأ المحادثة</p>
+              <p className="mt-1 max-w-xs text-sm leading-relaxed text-muted-foreground">
                 اسأل عن أي منتج أو سعر أو شحن — أو افتح «المنتجات» بالأسفل واختر ما يعجبك.
               </p>
             </div>
