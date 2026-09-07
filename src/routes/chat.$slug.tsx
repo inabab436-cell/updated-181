@@ -477,9 +477,9 @@ function ChatPage() {
         <div className="mx-auto flex w-full max-w-2xl items-center justify-between gap-3 px-4 py-3">
           <div className="flex min-w-0 items-center gap-3">
             {storefront.data?.logoUrl ? (
-              <img src={storefront.data.logoUrl} alt={brandName} className="h-10 w-10 shrink-0 rounded-2xl object-cover" />
+              <img src={storefront.data.logoUrl} alt={brandName} className="h-10 w-10 shrink-0 rounded-2xl object-cover shadow-card" />
             ) : (
-              <div className="hub-display grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-gradient-brand text-sm font-bold text-primary-foreground">
+              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-secondary text-sm font-bold text-secondary-foreground">
                 {String(brandName).slice(0, 1).toUpperCase()}
               </div>
             )}
